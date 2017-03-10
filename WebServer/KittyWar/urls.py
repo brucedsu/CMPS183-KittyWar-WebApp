@@ -12,4 +12,7 @@ urlpatterns = [
     url(r'kittywar/login/mobile/$',    views.login_mobile_view,    name='login_mobile'),
     url(r'kittywar/logout/$',          views.logout_view,          name='logout'),
     url(r'kittywar/home/$',            views.home_view,            name='home'),
+    url(r'kittywar/chance/$',          views.chance_view,          name='chance'),
+    url(r'kittywar/play/$',            views.play_view,            name='play'),
+    url(r'kittywar/ability/$',         views.ability_view,            name='ability'),
 ]
