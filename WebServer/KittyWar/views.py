@@ -173,6 +173,11 @@ def chance_view(request):
 def play_view(request):
     return render(request, 'play.html')
 
+# play View
+@login_required(login_url='/kittywar/login/')
+def battle_view(request):
+    return render(request, 'battle.html')
+
 # ability VIew
 @login_required(login_url='/kittywar/login/')
 def ability_view(request):

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Battle</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Changa+One|Open+Sans:400italic,700italic,400,700,800' rel='stylesheet' type='text/css'>
+    <link rel = "stylesheet" type = "text/css" href = "{% static 'main.css' %}" />
+    <link rel = "stylesheet" type = "text/css" href = "{% static 'normalize.css' %}" />
+    <link rel = "stylesheet" type = "text/css" href = "{% static 'responsive.css' %}" />
+</head>
+
+<body>
+<header>
+    <div id="index-title">
+    <h1>Good Luck</h1>
+    <a href="{% url 'kittywar:logout' %}"> <b>Log out</b> </a>
+    </div>
+    <nav>
+      <!--unordered list-->
+      <ul>
+        <li><a href="{% url 'kittywar:home' %}" >Cats</a></li>
+        <li><a href="{% url 'kittywar:chance' %}">Chance Cards</a></li>
+        <li><a href="{% url 'kittywar:play' %} ">Find Match Here!</a></li>
+      </ul>
+    </nav>
+
+</header>
+
+    <ul class="card">
+        <p class="name">Your Opponent: &nbsp;&nbsp;&nbsp;&nbsp; Fucking Bruce</p>
+        <div class="opponent-table">
+            <div class="card-opponent">
+
+                <span class="catcard"><img src="{% static "cat/Abyssinian Cat.jpg" %}" alt="" height="160" width="120"></span>
+                <span><img src="{% static "Ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>
+            </div>
+        </div>
+    </ul>
+
+    <ul class="card">
+        <div class="battleboard">
+            <div id="op"><img id="op-img" src="{% static "cat/redcard.jpg" %}" alt="" height="150" width="110"><p id="op-content">20</p></div>
+            <div id="self"><img id="self-img" src="{% static "cat/redcard.jpg" %}" alt="" height="150" width="110"><p id="self-content">20</p></div>
+
+        </div>
+    </ul>
+    <ul class="card">
+        <div class="user-table">
+            <div class="card-content">
+
+                <span class="catcard"><img src="{% static "cat/Abyssinian Cat.jpg" %}" alt="" height="160" width="120"></span>
+                <span><img src="{% static "Ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>
+                <span><img src="{% static "Chance/Can_t_Guard 509.jpg" %}" alt="" height="150" width="110"></span>
+                <span><img src="{% static "Chance/Double_Purring509.jpg" %}" alt="" height="150" width="110"></span>
+                <span><img src="{% static "Chance/Double_Scratch509.jpg" %}" alt="" height="150" width="110"></span>
+                <span><img src="{% static "Chance/Guaranteed_Purring 509.jpg" %}" alt="" height="150" width="110"></span>
+            </div>
+        </div>
+    </ul>
+
+<footer>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</footer>
+
+</body>
+</html>
