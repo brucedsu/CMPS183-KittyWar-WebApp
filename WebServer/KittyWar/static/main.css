@@ -230,6 +230,57 @@ nav {
   padding-bottom: 10px;
   text-align: center;
   color: #9932CC;
-  background: url(cat/funcbg.jpg) ;
+  background: url(cat/funcbg.jpg);
+}
+
+.opponent-table {
+  background: url(cat/cardtable.jpg);
+  margin-left: 15%;
+  margin-right: 19%;
+  padding-bottom: 10px;
+}
+
+.user-table {
+  background: url(cat/cardtable.jpg);
+  margin-left: 15%;
+  margin-right: 19%;
+  padding-bottom: 10px;
+}
+
+.name {
+  margin: 5px;
+  padding-bottom: 10px;
+  text-align: center;
+  font-family: 'Changa One', sans-serif;
+  color: #9932CC;
+  font-size: 1.1em;
+}
+
+.card-content {
+  padding-top: 10px;
+}
+
+.card-opponent {
+  padding-top: 10px;
+  padding-left: 35%;
+}
+
+.catcard {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.battleboard {
+  height:200px;
+  width: 460px;
+  background: url(cat/cardtable.jpg);
+  border: 10px dotted black;
+  margin-left: 30%;
+  margin-top: 0;
+  padding-bottom: 10px;
+}
+
+.card {
+  margin: 0;
 }
 
