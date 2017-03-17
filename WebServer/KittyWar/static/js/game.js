@@ -7,14 +7,17 @@ $(document).ready(function() {
     connect();
 
     $("#find-match-button").click(find_match);
+
 });
 
 function connect() {
     log("Connecting to game server...");
 
+    log("Token: " + token);
+
     // Create WebSocket connection.
-    socket = new WebSocket('ws://localhost:2056');
-    socket.onopen = server_open;
+    socket         = new WebSocket('ws://localhost:2056');
+    socket.onopen  = server_open;
     socket.onerror = server_error;
     socket.onclose = server_close;
 
@@ -44,7 +47,6 @@ function server_close() {
 }
 
 function log(server_message) {
-
     server_message = "\n" + server_message + "\n";
 
     var server_log = $("#server-log");
@@ -84,10 +86,13 @@ var finding_match = false;
 
 function find_match() {
     if (!finding_match) {
+        finding_match = true;
+
+        // update UI to indicate user
         $("#find-match-status").text("Finding match...");
 
         // send find match packet
-        send_packet(flag, token);
+        send_packet(FLAG_FIND_MATCH, token);
     }
 }
 

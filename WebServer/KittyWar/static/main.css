@@ -393,11 +393,28 @@ nav {
   font-size: 16px;
 }
 
-
-
 #server-log {
   background: url(cat/funcbg.jpg);
   color: blue;
-  float: left;
+  float: right;
+}
+
+.view {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.clearfix:before,
+.clearfix:after {
+  content: "";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.clearfix {
+  *zoom: 1;
 }
 

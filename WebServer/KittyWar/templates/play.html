@@ -14,43 +14,59 @@
     <link rel = "stylesheet" type = "text/css" href = "{% static 'responsive.css' %}" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        // user token
+        var token = "{{ token }}";
+
+        var opponent_cat = null;
+    </script>
 </head>
 
 <body>
-    <header>
-        <div id="index-title">
-        <h1>Find Match</h1>
-        <a href="{% url 'kittywar:logout' %}"><b>Log out</b></a>
-        </div>
-        <nav>
-          <!--unordered list-->
-          <ul>
-            <li><a href="{% url 'kittywar:home' %}" >Cats</a></li>
-            <li><a href="{% url 'kittywar:chance' %}">Chance Cards</a></li>
-            <li><a href="{% url 'kittywar:play' %} ">Find Match</a></li>
-          </ul>
-        </nav>
-    </header>
+    <div class="clearfix">
+        <header>
+            <div id="index-title">
+            <h1>Find Match</h1>
+            <a href="{% url 'kittywar:logout' %}"><b>Log out</b></a>
+            </div>
+            <nav>
+            <!--unordered list-->
+            <ul>
+                <li><a href="{% url 'kittywar:home' %}" >Cats</a></li>
+                <li><a href="{% url 'kittywar:chance' %}">Chance Cards</a></li>
+                <li><a href="{% url 'kittywar:play' %} ">Find Match</a></li>
+            </ul>
+            </nav>
+        </header>
+    </div>
 
     <textarea readonly
             rows="25" cols="50" id="server-log">
             Server messages logged below
     </textarea>
 
-    <div id="find-match-view">
+    <div id="find-match-view" class="view">
         <p id="find-match-status">Not finding match</p>
         <button class="button" id="find-match-button">Find Match</button>
     </div>
 
-    <div id="select-cat-view">
+    <div id="select-cat-view" class="view">
+        {% for cat in cats %}
+            <div>
+                <img src="{% static "" %}cat/{{cat.title}}.jpg" height="250" width="200"/>
+                <p>{{cat.title}}</p>
+            </div>
+        {% endfor %}
     </div>
 
     <div id="opponent-view">
+        <span><img /></span>
+        <p></p>
+        <span><img /></span>
     </div>
 
     <div id="player-view">
     </div>
-
 
     <a href="{% url 'kittywar:battle' %}"> Battle Platform</a>
 

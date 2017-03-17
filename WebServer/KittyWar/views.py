@@ -101,9 +101,22 @@ def login_view(request):
             password = form.cleaned_data['password']
             user = auth.authenticate(username=username, password=password)
 
+            userprofile = UserProfile.objects.get(user=user)
+
             if user is not None:
 
-                auth.login(request, user)
+                if userprofile is not None and not userprofile.logged_in():
+                    auth.login(request, user)
+
+                    while True:
+
+                        token = base64.b64encode(os.urandom(16)).decode('utf-8')
+                        tokenquery = UserProfile.objects.filter(token=token)
+                        if len(tokenquery) == 0: break
+
+                    userprofile.token = token
+                    userprofile.save()
+
                 return HttpResponseRedirect('/kittywar/home/')
             else:
                 message = 'Invalid username or password'
@@ -171,7 +184,15 @@ def chance_view(request):
 # play View
 @login_required(login_url='/kittywar/login/')
 def play_view(request):
-    return render(request, 'play.html')
+    template = 'play.html'
+
+    user_profile = UserProfile.objects.get(user=request.user)
+    user_token = user_profile.token
+    user_cats = user_profile.cats.all()
+
+    context = {'token': user_token, 'cats': user_cats}
+
+    return render(request, template, context)
 
 # play View
 @login_required(login_url='/kittywar/login/')
@@ -195,6 +216,10 @@ def ability_view(request):
 
 # Logout View
 def logout_view(request):
+    userprofile = UserProfile.objects.get(user=request.user)
+    userprofile.token = ""
+    userprofile.save()
 
     auth.logout(request)
     return HttpResponseRedirect('/kittywar/login/')
+
