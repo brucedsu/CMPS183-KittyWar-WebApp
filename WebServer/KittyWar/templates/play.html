@@ -6,41 +6,53 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Find Match Here!!!</title>
+    <title>KittyWar</title>
 
     <link href='http://fonts.googleapis.com/css?family=Changa+One|Open+Sans:400italic,700italic,400,700,800' rel='stylesheet' type='text/css'>
     <link rel = "stylesheet" type = "text/css" href = "{% static 'main.css' %}" />
     <link rel = "stylesheet" type = "text/css" href = "{% static 'normalize.css' %}" />
     <link rel = "stylesheet" type = "text/css" href = "{% static 'responsive.css' %}" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 
 <body>
-<header>
-    <div id="index-title">
-    <h1>Find Match Here!!!</h1>
-    <a href="{% url 'kittywar:logout' %}"> <b>Log out</b> </a>
+    <header>
+        <div id="index-title">
+        <h1>Find Match</h1>
+        <a href="{% url 'kittywar:logout' %}"><b>Log out</b></a>
+        </div>
+        <nav>
+          <!--unordered list-->
+          <ul>
+            <li><a href="{% url 'kittywar:home' %}" >Cats</a></li>
+            <li><a href="{% url 'kittywar:chance' %}">Chance Cards</a></li>
+            <li><a href="{% url 'kittywar:play' %} ">Find Match</a></li>
+          </ul>
+        </nav>
+    </header>
+
+    <textarea readonly
+            rows="25" cols="50" id="server-log">
+            Server messages logged below
+    </textarea>
+
+    <div id="find-match-view">
+        <button class="button" id="find-match-button">Find Match</button>
     </div>
-    <nav>
-      <!--unordered list-->
-      <ul>
-        <li><a href="{% url 'kittywar:home' %}" >Cats</a></li>
-        <li><a href="{% url 'kittywar:chance' %}">Chance Cards</a></li>
-        <li><a href="{% url 'kittywar:play' %} ">Find Match Here!</a></li>
-      </ul>
-    </nav>
 
-</header>
-
-    <div id="platform">
-        <h1> Click to Find your Opponents!! </h1>
-
-        <hr>
-        <textarea readonly
-                rows="25" cols="50" id="server-log">
-                Server messages logged below
-        </textarea>
+    <div id="select-cat-view">
     </div>
+
+    <div id="opponent-view">
+    </div>
+
+    <div id="player-view">
+    </div>
+
+
     <a href="{% url 'kittywar:battle' %}"> Battle Platform</a>
+
     <div id="playbutton">
         <button id="connect">
             Battle!!
@@ -51,71 +63,11 @@
             Message Server
         </button>
     </div>
-        <footer>
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-            <script>
+    <footer>
+        <p>Copyright &copy; 2017 Kitty War</p>
+    </footer>
 
-                var socket = null;
-
-                $( document ).ready(function() {
-
-                    $("#connect").click(connect);
-                    $("#message").click(send_message);
-                });
-
-                function connect() {
-
-                    log("Connecting to game server...");
-
-                    // Create WebSocket connection.
-                    socket = new WebSocket('ws://localhost:2056');
-                    socket.onopen = server_open;
-                    socket.onerror = server_error;
-                    socket.onclose = server_close;
-
-                    // Listen for messages
-                    socket.addEventListener('message', function (event) {
-                        console.log('Message from server', event.data);
-                    });
-                }
-
-                function send_message() {
-
-                    if (socket != null) {
-
-                        socket.send("Hello Server!");
-                        log("Message sent");
-                    }
-                }
-
-                function server_open() {
-                    log("Connection established");
-                }
-
-                function server_error(error) {
-                    log("Connection error");
-                }
-
-                function server_close() {
-                    log("Connection closed");
-                }
-
-                function log(server_message) {
-
-                    server_message = "\n" + server_message + "\n";
-
-                    var server_log = $("#server-log");
-                    server_log.val(server_log.val() + server_message);
-                }
-
-            </script>
-        </footer>
-
-
-<footer>
-    <p>Copyright &copy; 2017 Kitty War</p>
-</footer>
-
+    <script src= "{% static 'js/game.js' %}""></script>
 </body>
 </html>
