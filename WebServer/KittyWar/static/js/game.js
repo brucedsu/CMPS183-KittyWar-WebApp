@@ -1,7 +1,11 @@
-var socket = null;
+var player_cat          = null;
+var player_abilities    = [];
+var player_chance_cards = [];
 
-var player_cat   = null;
 var opponent_cat = null;
+
+// web socket
+var socket = null;
 
 $(document).ready(function() {
     $("#message").click(send_message);
@@ -115,6 +119,60 @@ function confirm_selected_cat() {
 function handle_packet(flag, body) {
     switch (flag) {
     case FLAG_FIND_MATCH:
+        break;
+    case FLAG_USER_PROFILE:
+        break;
+    case FLAG_ALL_CARDS:
+        break;
+    case FLAG_CAT_CARDS:
+        break;
+    case FLAG_BASIC_CARDS:
+        break;
+    case FLAG_CHANCE_CARDS:
+        break;
+    case FLAG_ABILITY_CARDS:
+        break;
+    case FLAG_END_MATCH:
+        break;
+    case FLAG_NEXT_PHASE:
+        break;
+    case FLAG_READY:
+        break;
+    case FLAG_SELECT_CAT:
+        break;
+    case FLAG_OPPONENT_SELECTED_CAT:
+        break;
+    case FLAG_USE_ABILITY:
+        break;
+    case FLAG_GAIN_HP:
+        break;
+    case FLAG_GAIN_HP:
+        break;
+    case FLAG_OPPONENT_GAIN_HP:
+        break;
+    case FLAG_DAMAGE_MODIFIED:
+        break;
+    case FLAG_OPPONENT_DAMAGE_MODIFIED:
+        break;
+    case FLAG_GAIN_CHANCE:
+        break;
+    case FLAG_OPPONENT_GAIN_CHANCE:
+        break;
+    case FLAG_GAIN_ABILITY:
+        break;
+    case FLAG_GAIN_CHANCES:
+        break;
+    case FLAG_SELECT_MOVE:
+        break;
+    case FLAG_SELECT_CHANCE:
+        break;
+    case FLAG_REVEAL_MOVE:
+        break;
+    case FLAG_REVEAL_CHANCE:
+        break;
+    case FLAG_SPOTLIGHT:
+        break;
+    case FLAG_OPPONENT_SPOTLIGHT:
         break;
     default:
         break;

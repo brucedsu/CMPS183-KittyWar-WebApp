@@ -418,3 +418,7 @@ nav {
   *zoom: 1;
 }
 
+.hide {
+  display: none;
+}
+

@@ -30,7 +30,29 @@
             health: {{cat.health}},
             default: {{cat.default}},
             ability_id: {{cat.ability_id}}
-        })
+        });
+        {% endfor %}
+
+        // setup available abilities
+        {% for ability in ability_cards %}
+        available_abilities.push({
+            id: {{ability.ability_id}},
+            title: "{{ability.title}}",
+            description: "{{ability.description}}",
+            phase: {{ability.phase}},
+            cooldown: {{ability.cooldown}}
+        });
+        {% endfor %}
+
+        // setup available chance cards
+        {% for chance in chance_cards %}
+        chance_cards.push({
+            id: {{chance.chance_id}},
+            title: "{{chance.title}}",
+            type: "{{chance.type}}",
+            description: "{{chance.description}}",
+            basic_id: {{chance.basic_id}}
+        });
         {% endfor %}
     </script>
 </head>
@@ -58,12 +80,12 @@
             Server messages logged below
     </textarea>
 
-    <div id="find-match-view" class="view">
+    <div id="find-match-view" class="view hide">
         <p id="find-match-status">Not finding match</p>
         <button class="button" id="find-match-button">Find Match</button>
     </div>
 
-    <div id="select-cat-view" class="view">
+    <div id="select-cat-view" class="view hide">
         <p id="select-cat-status">Select a cat!</p>
 
         {% for cat in user_cats %}
@@ -77,26 +99,28 @@
         <button class="button" id="select-cat-confirm-button">Confirm</button>
     </div>
 
-    <div id="opponent-view">
-        <span><img /></span>
-        <p></p>
-        <span><img /></span>
+    <div id="opponent-view" class="view">
+        <span><img id="opponent-view-cat-image" src="{% static "cat/Abyssinian Cat.jpg" %}" alt="" height="160" width="120"></span>  <!-- opponent cat image -->
+        <span><img id="opponent-view-cat-ability"src="{% static "Ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
+        <p id="opponent-view-cat-name">Abyssinian Cat</p>  <!-- opponent cat name -->
+        <p id="opponent-view-cat-health">Health: 10</p>  <!-- opponent cat health -->
     </div>
 
-    <div id="player-view">
+    <div id="arena-view">
     </div>
 
-    <a href="{% url 'kittywar:battle' %}"> Battle Platform</a>
-
-    <div id="playbutton">
-        <button id="connect">
-            Battle!!
-        </button>
-    </div>
-    <div id="msgbutton">
-        <button id="message">
-            Message Server
-        </button>
+    <div id="player-view" class="view">
+        <span><img id="player-view-cat-image" src="{% static "cat/Abyssinian Cat.jpg" %}" alt="" height="160" width="120"></span>  <!-- opponent cat image -->
+        <span><img id="player-view-cat-ability"src="{% static "Ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
+        <span><img id="player-view-cat-random-ability"src="{% static "Ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
+        <p id="player-view-cat-name">Abyssinian Cat</p>  <!-- opponent cat name -->
+        <p id="player-view-cat-health">Health: 10</p>  <!-- opponent cat health -->
+        <ul id="player-view-chance-card-list">
+            <li><span><img src="{% static "Chance/Can_t_Guard 509.jpg" %}" alt="" height="150" width="110"></span></li>
+            <li><span><img src="{% static "Chance/Double_Purring509.jpg" %}" alt="" height="150" width="110"></span></li>
+            <li><span><img src="{% static "Chance/Double_Scratch509.jpg" %}" alt="" height="150" width="110"></span></li>
+            <li><span><img src="{% static "Chance/Guaranteed_Purring 509.jpg" %}" alt="" height="150" width="110"></span></li>
+        </ul>
     </div>
 
     <footer>
