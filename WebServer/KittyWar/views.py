@@ -10,6 +10,8 @@ from .models import *
 
 import json, os, base64
 
+import json as simplejson
+
 
 # Index View - redirects to registration
 def index_view(request):
@@ -171,15 +173,16 @@ def login_mobile_view(request):
 def home_view(request):
     template = 'home.html'
     user_profile = UserProfile.objects.get(user=request.user)
-    print(request.user)
     context = {'myvar': user_profile.cats.all()}
     return render(request, template, context)
+
 
 # Chance Card View
 @login_required(login_url='/kittywar/login/')
 def chance_view(request):
 
     return render(request, 'chance.html')
+
 
 # play View
 @login_required(login_url='/kittywar/login/')
@@ -190,14 +193,16 @@ def play_view(request):
     user_token = user_profile.token
     user_cats = user_profile.cats.all()
 
-    context = {'token': user_token, 'cats': user_cats}
+    context = {'token': user_token, 'user_cats': user_cats}
 
     return render(request, template, context)
+
 
 # play View
 @login_required(login_url='/kittywar/login/')
 def battle_view(request):
     return render(request, 'battle.html')
+
 
 # ability VIew
 @login_required(login_url='/kittywar/login/')
@@ -213,6 +218,7 @@ def ability_view(request):
 
     context = {'myvar': cat_ability}
     return render(request, template, context)
+
 
 # Logout View
 def logout_view(request):

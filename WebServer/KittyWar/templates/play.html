@@ -15,10 +15,11 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
-        // user token
-        var token = "{{ token }}";
+        var token  = "{{ token }}";
 
-        var opponent_cat = null;
+        var available_cats      = [];
+        var available_abilities = [];
+        var chance_cards        = [];
     </script>
 </head>
 
@@ -51,10 +52,13 @@
     </div>
 
     <div id="select-cat-view" class="view">
-        {% for cat in cats %}
-            <div>
+        <p id="select-cat-status">Select a cat!</p>
+
+        {% for cat in user_cats %}
+            <div onclick="select_cat({{cat.cat_id}})">
                 <img src="{% static "" %}cat/{{cat.title}}.jpg" height="250" width="200"/>
                 <p>{{cat.title}}</p>
+                <p>Initial HP: {{cat.health}}</p>
             </div>
         {% endfor %}
     </div>
@@ -88,3 +92,4 @@
     <script src= "{% static 'js/game.js' %}""></script>
 </body>
 </html>
+

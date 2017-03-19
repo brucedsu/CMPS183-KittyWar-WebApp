@@ -1,5 +1,8 @@
 var socket = null;
 
+var player_cat   = null;
+var opponent_cat = null;
+
 $(document).ready(function() {
     $("#message").click(send_message);
 
@@ -96,8 +99,21 @@ function find_match() {
     }
 }
 
-function handle_packet(flag, body) {
+var selected_cat_id = -1;
 
+function select_cat(cat_id) {
+    log("AAA");
+    selected_cat_id = cat_id;
+    $('#select-cat-status').text(`Selected cat ${selected_cat_id}`);
+}
+
+function handle_packet(flag, body) {
+    switch (flag) {
+    case FLAG_FIND_MATCH:
+        break;
+    default:
+        break;
+    }
 }
 
 function send_packet(flag, token, body) {
