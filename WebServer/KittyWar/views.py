@@ -192,8 +192,15 @@ def play_view(request):
     user_profile = UserProfile.objects.get(user=request.user)
     user_token = user_profile.token
     user_cats = user_profile.cats.all()
+    chance_cards = ChanceCards.objects.all()
+    ability_cards = AbilityCards.objects.all()
 
-    context = {'token': user_token, 'user_cats': user_cats}
+    context = {
+        'token': user_token,
+        'user_cats': user_cats,
+        'chance_cards': chance_cards,
+        'ability_cards': ability_cards
+    }
 
     return render(request, template, context)
 

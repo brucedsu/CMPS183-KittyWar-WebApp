@@ -10,7 +10,7 @@ $(document).ready(function() {
     connect();
 
     $("#find-match-button").click(find_match);
-
+    $("#select-cat-confirm-button").click(confirm_selected_cat);
 });
 
 function connect() {
@@ -95,16 +95,21 @@ function find_match() {
         $("#find-match-status").text("Finding match...");
 
         // send find match packet
-        send_packet(FLAG_FIND_MATCH, token);
+        send_packet(FLAG_FIND_MATCH, token, null);
     }
 }
 
 var selected_cat_id = -1;
 
 function select_cat(cat_id) {
-    log("AAA");
     selected_cat_id = cat_id;
-    $('#select-cat-status').text(`Selected cat ${selected_cat_id}`);
+    $('#select-cat-status').text(`Selected ${available_cats[selected_cat_id].title}`);
+}
+
+function confirm_selected_cat() {
+    if (selected_cat_id < 0) return;
+
+    send_packet(FLAG_SELECT_CAT, token, selected_cat_id);
 }
 
 function handle_packet(flag, body) {
@@ -117,7 +122,7 @@ function handle_packet(flag, body) {
 }
 
 function send_packet(flag, token, body) {
-
+    log(`Sending packet. Flag is ${flag}... Token is ${token}. Body is ${body}.`)
 }
 
 function receive_packet(event) {

@@ -20,6 +20,18 @@
         var available_cats      = [];
         var available_abilities = [];
         var chance_cards        = [];
+
+        // setup available cats
+        {% for cat in user_cats %}
+        available_cats.push({
+            id: {{cat.cat_id}},
+            title: "{{cat.title}}",
+            description: "{{cat.description}}",
+            health: {{cat.health}},
+            default: {{cat.default}},
+            ability_id: {{cat.ability_id}}
+        })
+        {% endfor %}
     </script>
 </head>
 
@@ -61,6 +73,8 @@
                 <p>Initial HP: {{cat.health}}</p>
             </div>
         {% endfor %}
+
+        <button class="button" id="select-cat-confirm-button">Confirm</button>
     </div>
 
     <div id="opponent-view">
