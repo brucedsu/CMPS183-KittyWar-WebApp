@@ -88,6 +88,12 @@ var FLAG_REVEAL_CHANCE            = 59;
 var FLAG_SPOTLIGHT                = 60;
 var FLAG_OPPONENT_SPOTLIGHT       = 61;
 
+// basic moves
+var MOVE_PURR    = 0;
+var MOVE_GUARD   = 1;
+var MOVE_SCRATCH = 2;
+var MOVE_SKIP    = 3;
+
 var finding_match = false;
 
 function find_match() {
@@ -115,12 +121,40 @@ function confirm_selected_cat() {
     send_packet(FLAG_SELECT_CAT, token, selected_cat_id);
 }
 
+function update_player_chance_card_list() {
+    var idx = 0;
+    for (chance_card in player_chance_cards) {
+        $('player-view-chance-card-list').append(
+            `<li><span onclick="select_chance_card(${idx})">` +
+            `<img src="chance/${chance_card.title}.jpg" height="150" width="150" />` +
+            `</span></li>`);
+        idx = idx + 1;
+    }
+}
+
 var selected_move_id = -1;
 
 function select_move(move_id) {
     selected_move_id = move_id;
 
     send_packet(FLAG_SELECT_MOVE, token, selected_move_id);
+}
+
+function use_ability(player_ability_index) {
+    var ability = player_abilities[player_ability_index];
+}
+
+function move_to_string(move_id) {
+    switch (move_id) {
+    case MOVE_PURR:
+        return "Purr";
+    case MOVE_GUARD:
+        return "Guard";
+    case MOVE_SKIP:
+        return "Skip";
+    default:
+        return "Unknown move";
+    }
 }
 
 var selected_chance_id = -1;
@@ -242,33 +276,40 @@ function handle_packet(flag, body) {
             // remove all cards first
             $('player-view-chance-card-list').empty();
 
-            idx = 0;
-            for (chance_card in player_chance_cards) {
-                $('player-view-chance-card-list').append(
-                    `<li><span onclick="select_chance_card(${idx})">` +
-                    `<img src="chance/${chance_card.title}.jpg" height="150" width="150" />` +
-                    `</span></li>`);
-                idx = idx + 1;
-            }
+            // update chance card list
+            update_player_chance_card_list();
         }
         break;
     case FLAG_SELECT_MOVE:
+        if (body == 0) {
+            // failed to select move
+        } else if (body == 1) {
+            $('player-selected-move').text("Selected move: " + move_to_string(selected_move_id));
+        }
         break;
     case FLAG_SELECT_CHANCE:
         if (body == 0) {
             // failed to select chance
         } else if (body == 1) {
+            $('player-selected-chance').text("Selected chance: " + chance_cards[selected_chance_id].title);
+
+            // remove chance
             for (chance_card in player_chance_cards) {
                 if (chance_card.id == selected_chance_id) {
                     player_chance_cards.splice(idx, 1);
                     break;
                 }
             }
+
+            // update chance card list
+            update_player_chance_card_list();
         }
         break;
     case FLAG_REVEAL_MOVE:
+        $('opponent-selected-move').text("Opponent selected move: " + move_to_string(body));
         break;
     case FLAG_REVEAL_CHANCE:
+        $('opponent-selected-chance').text("Opponent selected chance: " + chance_cards[body].title);
         break;
     case FLAG_SPOTLIGHT:
         break;
