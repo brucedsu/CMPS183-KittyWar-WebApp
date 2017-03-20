@@ -59,6 +59,39 @@ function log(server_message) {
     server_log.val(server_log.val() + server_message);
 }
 
+// game phases
+var PHASE_BEFORE_GAME         = 0;
+var PHASE_PRELUDE             = 1;
+var PHASE_ENACTING_STRATEGIES = 2;
+var PHASE_SHOWING_CARDS       = 3;
+var PHASE_STRATEGY_SETTLEMENT = 4;
+var PHASE_POSTLUDE            = 5;
+
+function phase_to_string(phase) {
+    switch (phase) {
+        case PHASE_BEFORE_GAME:
+            return "Before Game";
+        case PHASE_PRELUDE:
+            return "Prelude";
+        case PHASE_ENACTING_STRATEGIES:
+            return "Enacting Strategies";
+        case PHASE_SHOWING_CARDS:
+            return "Showing Cards";
+        case PHASE_STRATEGY_SETTLEMENT:
+            return "Strategy Settlement";
+        case PHASE_POSTLUDE:
+            return "Postlude";
+        default:
+            return "Unknwon Phase";
+    }
+}
+
+var current_game_phase = PHASE_BEFORE_GAME;
+
+function start_next_phase() {
+
+}
+
 // flags
 var FLAG_FIND_MATCH               = 2;
 var FLAG_USER_PROFILE             = 3;
