@@ -80,12 +80,12 @@
             Server messages logged below
     </textarea>
 
-    <div id="find-match-view" class="view hide">
+    <div id="find-match-view" class="view">
         <p id="find-match-status">Not finding match</p>
         <button class="button" id="find-match-button">Find Match</button>
     </div>
 
-    <div id="select-cat-view" class="view hide">
+    <div id="select-cat-view" class="view">
         <p id="select-cat-status">Select a cat!</p>
 
         {% for cat in user_cats %}
@@ -101,7 +101,7 @@
 
     <div id="opponent-view" class="view">
         <span><img id="opponent-view-cat-image" src="{% static "cat/Abyssinian Cat.jpg" %}" alt="" height="160" width="120"></span>  <!-- opponent cat image -->
-        <span><img id="opponent-view-cat-ability"src="{% static "Ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
+        <span><img id="opponent-view-cat-ability"src="{% static "ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
         <p id="opponent-view-cat-name">Abyssinian Cat</p>  <!-- opponent cat name -->
         <p id="opponent-view-cat-health">Health: 10</p>  <!-- opponent cat health -->
     </div>
@@ -111,15 +111,18 @@
 
     <div id="player-view" class="view">
         <span><img id="player-view-cat-image" src="{% static "cat/Abyssinian Cat.jpg" %}" alt="" height="160" width="120"></span>  <!-- opponent cat image -->
-        <span><img id="player-view-cat-ability"src="{% static "Ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
-        <span><img id="player-view-cat-random-ability"src="{% static "Ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
+        <span><img id="player-view-cat-ability"src="{% static "ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
+        <span><img id="player-view-cat-random-ability"src="{% static "ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
         <p id="player-view-cat-name">Abyssinian Cat</p>  <!-- opponent cat name -->
         <p id="player-view-cat-health">Health: 10</p>  <!-- opponent cat health -->
+        <ul id="player-view-basic-moves">
+            <li><span onclick="select_move(0)"><img src="{% static "move/Pur.jpg" %}" alt="" height="150" width="110" /></span></li>
+            <li><span onclick="select_move(1)"><img src="{% static "move/Guard.jpg" %}" alt="" height="150" width="110" /></span></li>
+            <li><span onclick="select_move(2)"><img src="{% static "move/Scratch.jpg" %}" alt="" height="150" width="110" /></span></li>
+        </ul>
         <ul id="player-view-chance-card-list">
-            <li><span><img src="{% static "Chance/Can_t_Guard 509.jpg" %}" alt="" height="150" width="110"></span></li>
-            <li><span><img src="{% static "Chance/Double_Purring509.jpg" %}" alt="" height="150" width="110"></span></li>
-            <li><span><img src="{% static "Chance/Double_Scratch509.jpg" %}" alt="" height="150" width="110"></span></li>
-            <li><span><img src="{% static "Chance/Guaranteed_Purring 509.jpg" %}" alt="" height="150" width="110"></span></li>
+            <li><span onclick="select_chance_card(0)"><img src="{% static "chance/Can_t_Guard 509.jpg" %}" alt="" height="150" width="110"></span></li>
+            <li><span onclick="select_chance_card(1)"><img src="{% static "chance/Double_Purring509.jpg" %}" alt="" height="150" width="110"></span></li>
         </ul>
     </div>
 
