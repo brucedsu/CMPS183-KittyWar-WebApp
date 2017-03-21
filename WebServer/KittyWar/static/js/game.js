@@ -4,13 +4,12 @@ var player_chance_cards = [];
 
 var opponent_cat = null;
 
-// web socket
+// Global Web Socket
 var socket = null;
 
 $(document).ready(function() {
-    $("#message").click(send_message);
 
-    // automatically connect to the game server
+    // Automatically connect to the game server
     connect();
 
     $("#find-match-button").click(find_match);
@@ -18,26 +17,20 @@ $(document).ready(function() {
 });
 
 function connect() {
-    log("Connecting to game server...");
 
+    log("Connecting to game server...");
     log("Token: " + token);
 
     // Create WebSocket connection.
     socket         = new WebSocket('ws://localhost:2056');
+    socket.binaryType = 'arraybuffer';
+
     socket.onopen  = server_open;
     socket.onerror = server_error;
     socket.onclose = server_close;
 
-    // Listen for messages
+    // Listen for server messages
     socket.addEventListener('message', receive_packet);
-}
-
-function send_message() {
-    if (socket != null) {
-
-        socket.send("Hello Server!");
-        log("Message sent");
-    }
 }
 
 function server_open() {
@@ -53,6 +46,7 @@ function server_close() {
 }
 
 function log(server_message) {
+
     server_message = "\n" + server_message + "\n";
 
     var server_log = $("#server-log");
@@ -396,11 +390,68 @@ function handle_packet(flag, body) {
     }
 }
 
+/*
+*   Server Related Functions
+* - Recieving packets
+* - Sending packets
+*/
+
 function send_packet(flag, token, body) {
-    log(`Sending packet. Flag is ${flag}... Token is ${token}. Body is ${body}.`)
+
+    var packet;
+    var byteSize = 25;
+
+    if (body != null) {
+
+        if(body instanceof Array)
+            byteSize += body.length;
+        else
+            byteSize += 1;
+    }
+
+    // Initialize packet array and store flag
+    packet = new Uint8Array(byteSize);
+    packet[0] = flag;
+
+    var i;
+
+    // Store token inside packet
+    for (i = 0; i < token.length; ++i)
+        packet[i + 1] = token.charCodeAt(i);
+
+    // Single byte body
+    if (byteSize == 26)
+        packet[25] = body;
+
+    // Multi byte body
+    else if (byteSize > 26) {
+
+        for (i = 0; i < body.length; ++i)
+            packet[i + 25] = body[i];
+    }
+
+    socket.send(packet);
 }
 
 function receive_packet(event) {
-    console.log('Message from server', event.data);
-}
 
+    var packet = new Uint8Array(event.data);
+
+    log("Incoming message");
+
+    var flag = packet[0];
+    log("Flag: " + flag);
+
+    var body;
+    if (packet.length > 2) {
+
+        body = new Array();
+        for(var i = 1; i < packet.length; ++i)
+            body.push(packet[i]);
+    }
+    else
+        body = packet[1];
+    log("Body: " + body);
+
+    handle_packet(flag, body);
+}
