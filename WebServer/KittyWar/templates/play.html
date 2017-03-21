@@ -15,6 +15,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
+        var user_id = {{ user_id }};
         var token  = "{{ token }}";
 
         var available_cats      = [];
@@ -135,7 +136,7 @@
             <li><span onclick="select_chance_card(1)"><img src="{% static "chance/Double_Purring509.jpg" %}" alt="" height="150" width="110"></span></li>
         </ul>
 
-        <button class="button" id="player-view-ready-button">Ready</button>
+        <button onclick="ready()" class="button" id="player-view-ready-button">Ready</button>
     </div>
 
     <footer>

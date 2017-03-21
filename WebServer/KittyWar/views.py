@@ -196,6 +196,7 @@ def play_view(request):
     ability_cards = AbilityCards.objects.all()
 
     context = {
+        'user_id': request.user.id,
         'token': user_token,
         'user_cats': user_cats,
         'chance_cards': chance_cards,

@@ -14,12 +14,19 @@ $(document).ready(function() {
 
     $("#find-match-button").click(find_match);
     $("#select-cat-confirm-button").click(confirm_selected_cat);
+
+    $("#find-match-view").show();
+    $("#select-cat-view").hide();
+    $("#opponent-view").hide();
+    $("#player-view").hide();
+    $("#arena-view").hide();
 });
 
 function connect() {
 
     log("Connecting to game server...");
     log("Token: " + token);
+    log("User ID: " + user_id);
 
     // Create WebSocket connection.
     socket         = new WebSocket('ws://localhost:2056');
@@ -107,6 +114,7 @@ function start_next_phase() {
 }
 
 // flags
+var FLAG_WEB_LOGIN                = 10;
 var FLAG_FIND_MATCH               = 2;
 var FLAG_USER_PROFILE             = 3;
 var FLAG_ALL_CARDS                = 4;
@@ -150,6 +158,9 @@ function find_match() {
         // update UI to indicate user
         $("#find-match-status").text("Finding match...");
 
+        // send web login packet
+        send_packet(FLAG_WEB_LOGIN, token, user_id);
+
         // send find match packet
         send_packet(FLAG_FIND_MATCH, token, null);
     }
@@ -177,6 +188,10 @@ function update_player_chance_card_list() {
             `</span></li>`);
         idx = idx + 1;
     }
+}
+
+function ready() {
+    send_packet(FLAG_READY, token, null);
 }
 
 var selected_move_id = -1;
@@ -221,15 +236,17 @@ function handle_packet(flag, body) {
     var idx = 0;
 
     switch (flag) {
+    case FLAG_WEB_LOGIN:
+        break;
     case FLAG_FIND_MATCH:
         // show select cat view
-        $("select-cat-view").show();
+        $("#select-cat-view").show();
 
         // hide other views
-        $("find-match-view").hide();
-        $("opponent-view").hide();
-        $("player-view").hide();
-        $("arena-view").hide();
+        $("#find-match-view").hide();
+        $("#opponent-view").hide();
+        $("#player-view").hide();
+        $("#arena-view").hide();
         break;
     case FLAG_USER_PROFILE:
         break;
@@ -247,12 +264,12 @@ function handle_packet(flag, body) {
         break;
     case FLAG_NEXT_PHASE:
         if (current_phase == PHASE_BEFORE_GAME) {  // setup game
-            $("select-cat-view").hide();
-            $("find-match-view").hide();
+            $("#select-cat-view").hide();
+            $("#find-match-view").hide();
 
-            $("opponent-view").show();
-            $("player-view").show();
-            $("arena-view").show();
+            $("#opponent-view").show();
+            $("#player-view").show();
+            $("#arena-view").show();
         }
 
         start_next_phase();
@@ -264,21 +281,24 @@ function handle_packet(flag, body) {
             player_cat = available_cats[selected_cat_id];
             player_abilities.push(available_abilities[player_cat.ability_id]);
 
-            $("player-view-cat-image").attr({
+            $("#player-view-cat-image").attr({
                 src: "cat/" + player_cat.title + ".jpg",
                 title: player_cat.title,
                 alt: player_cat.title + " Image"
             });
 
-            $("player-view-cat-ability").attr({
+            $("#player-view-cat-ability").attr({
                 src: "ability/" + available_abilities[player_cat.ability_id].title + ".jpg",
                 title: available_abilities[player_cat.ability_id].title,
                 alt: available_abilities[player_cat.ability_id].title + " Image"
             });
 
-            $("player-view-cat-name").text(player_cat.title);
+            $("#player-view-cat-name").text(player_cat.title);
 
-            $("player-view-cat-health").text(player_cat.health);
+            $("#player-view-cat-health").text(player_cat.health);
+
+            // send ready packet
+            send_packet(FLAG_READY, token, null);
         } else {
             log(`Failed to select cat $(selected_cat_id)`);
         }
@@ -288,21 +308,21 @@ function handle_packet(flag, body) {
             var opponent_cat_id = body;
             opponent_cat = available_cats[opponent_cat_id];
 
-            $("opponent-view-cat-image").attr({
+            $("#opponent-view-cat-image").attr({
                 src: "cat/" + opponent_cat.title + ".jpg",
                 title: opponent_cat.title,
                 alt: opponent_cat.title + " Image"
             });
 
-            $("opponent-view-cat-ability").attr({
+            $("#opponent-view-cat-ability").attr({
                 src: "ability/" + available_abilities[opponent_cat.ability_id].title + ".jpg",
                 title: available_abilities[opponent_cat.ability_id].title,
                 alt: available_abilities[opponent_cat.ability_id].title + " Image"
             });
 
-            $("opponent-view-cat-namge").text(opponent_cat.title);
+            $("#opponent-view-cat-namge").text(opponent_cat.title);
 
-            $("oppoent-view-cat-health").text(opponent_cat.health);
+            $("#oppoent-view-cat-health").text(opponent_cat.health);
         }
         break;
     case FLAG_USE_ABILITY:
@@ -315,11 +335,11 @@ function handle_packet(flag, body) {
         break;
     case FLAG_GAIN_HP:
         player_cat.health = body;
-        $("player-view-cat-health").text(player_cat.health);
+        $("#player-view-cat-health").text(player_cat.health);
         break;
     case FLAG_OPPONENT_GAIN_HP:
         opponent_cat.health = body;
-        $("oppoent-view-cat-health").text(opponent_cat.health);
+        $("#oppoent-view-cat-health").text(opponent_cat.health);
         break;
     case FLAG_DAMAGE_MODIFIED:
         break;
@@ -397,6 +417,9 @@ function handle_packet(flag, body) {
 */
 
 function send_packet(flag, token, body) {
+    log("Outgoing message");
+    log("Flag: " + flag);
+    log("Body: " + body);
 
     var packet;
     var byteSize = 25;
@@ -455,3 +478,4 @@ function receive_packet(event) {
 
     handle_packet(flag, body);
 }
+
