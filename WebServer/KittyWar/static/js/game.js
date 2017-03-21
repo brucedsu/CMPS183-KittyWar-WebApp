@@ -86,10 +86,30 @@ function phase_to_string(phase) {
     }
 }
 
-var current_game_phase = PHASE_BEFORE_GAME;
+var current_phase = PHASE_BEFORE_GAME;
 
 function start_next_phase() {
+    // loosing condition
+    if (player_cat.health == 0 || opponent_cat.health == 20) {
+        alert("You lost! Good game, well played!");
+        return;
+    }
 
+    // winning condition
+    if (player_cat.health == 20 || opponent_cat.health == 0) {
+        alert("You won! You are awesome!");
+        return;
+    }
+
+    if (current_phase == PHASE_POSTLUDE) {
+        current_phase = PHASE_PRELUDE;
+
+        // reset some labels
+    } else {
+        current_phase = current_phase + 1;
+    }
+
+    alert(phase_to_string(current_phase) + " started!");
 }
 
 // flags
@@ -173,8 +193,13 @@ function select_move(move_id) {
     send_packet(FLAG_SELECT_MOVE, token, selected_move_id);
 }
 
+var used_ability_id = -1;
+
 function use_ability(player_ability_index) {
     var ability = player_abilities[player_ability_index];
+    used_ability_id = ability.id;
+
+    send_packet(FLAG_USE_ABILITY, token, used_ability_id);
 }
 
 function move_to_string(move_id) {
@@ -227,6 +252,16 @@ function handle_packet(flag, body) {
     case FLAG_END_MATCH:
         break;
     case FLAG_NEXT_PHASE:
+        if (current_phase == PHASE_BEFORE_GAME) {  // setup game
+            $("select-cat-view").hide();
+            $("find-match-view").hide();
+
+            $("opponent-view").show();
+            $("player-view").show();
+            $("arena-view").show();
+        }
+
+        start_next_phase();
         break;
     case FLAG_READY:
         break;
@@ -277,12 +312,20 @@ function handle_packet(flag, body) {
         }
         break;
     case FLAG_USE_ABILITY:
+        if (body == 0) {
+            Alert("Ability is on cool down!");
+        } else if (body == 1) {
+            $('player-used-ability').text(
+                "Player used ability: " + available_abilities[used_ability_id].title);
+        }
         break;
     case FLAG_GAIN_HP:
-        break;
-    case FLAG_GAIN_HP:
+        player_cat.health = body;
+        $("player-view-cat-health").text(player_cat.health);
         break;
     case FLAG_OPPONENT_GAIN_HP:
+        opponent_cat.health = body;
+        $("oppoent-view-cat-health").text(opponent_cat.health);
         break;
     case FLAG_DAMAGE_MODIFIED:
         break;
