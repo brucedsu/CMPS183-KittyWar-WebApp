@@ -511,3 +511,10 @@ nav {
   margin-right: 10px;
 }
 
+#player-view-chance-card-list {
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 180px;
+}
+

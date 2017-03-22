@@ -130,7 +130,7 @@ var FLAG_WEB_LOGIN                = 10;
 var FLAG_FIND_MATCH               = 2;
 var FLAG_USER_PROFILE             = 3;
 var FLAG_ALL_CARDS                = 4;
-var FLAG_CAT_CARDS                = 5
+var FLAG_CAT_CARDS                = 5;
 var FLAG_BASIC_CARDS              = 6;
 var FLAG_CHANCE_CARDS             = 7;
 var FLAG_ABILITY_CARDS            = 8;
@@ -204,9 +204,9 @@ function update_player_chance_card_list() {
         if (chance_card_id == -1) continue;
 
         $("#player-view-chance-card-list").append(
-            `<li><span onclick="use_chance_card(${chance_card_id})">` +
+            `<span onclick="use_chance_card(${chance_card_id})">` +
             `<img src="/static/chance/${chance_cards[chance_card_id].title}.jpg" height="150" width="110" />` +
-            `</span></li>`);
+            `</span>`);
     }
 }
 
@@ -348,7 +348,7 @@ function handle_packet(flag, body) {
         break;
     case FLAG_USE_ABILITY:
         if (body == 0) {
-            Alert("Ability is on cool down!");
+            alert("Ability is on cool down!");
         } else if (body == 1) {
             $("#player-used-ability-image").show();
 
