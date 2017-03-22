@@ -1,2 +1,3 @@
 *.pyc
 WebServer/KittyWar/migrations/
+.idea/
