@@ -114,7 +114,13 @@ function start_next_phase() {
         current_phase = current_phase + 1;
     }
 
-    $("#game-phase").text(phase_to_string(current_phase));
+    if (current_phase == PHASE_PRELUDE) {
+        $("#opponent-selected-move-and-chance").empty();
+        $("#player-selected-move-and-chance").empty();
+        $("#player-used-ability-image").hide();
+    }
+
+    $("#game-phase").text("Game phase: " + phase_to_string(current_phase));
 
     alert(phase_to_string(current_phase) + " started!");
 }
@@ -344,8 +350,13 @@ function handle_packet(flag, body) {
         if (body == 0) {
             Alert("Ability is on cool down!");
         } else if (body == 1) {
-            $("#player-used-ability").text(
-                "Player used ability: " + available_abilities[used_ability_id].title);
+            $("#player-used-ability-image").show();
+
+            $("#player-used-ability-image").attr({
+                src: "/static/ability/" + available_abilities[used_ability_id].title + ".jpg",
+                title: available_abilities[used_ability_id].title,
+                alt: available_abilities[used_ability_id].title.title + " Image"
+            });
         }
         break;
     case FLAG_GAIN_HP:
@@ -393,7 +404,11 @@ function handle_packet(flag, body) {
             alert("Can't select move during " + phase_to_string(current_phase));
         } else if (body == 1) {
             alert("Selected move " + move_to_string(selected_move_id));
-            $("#player-selected-move").text("Selected move: " + move_to_string(selected_move_id));
+
+            $("#player-selected-move-and-chance").append(
+                `<li><span>` +
+                `<img src="/static/move/${move_to_string(selected_move_id)}.jpg" height="150" width="110" />` +
+                `</span></li>`);
         }
         break;
     case FLAG_SELECT_CHANCE:
@@ -402,7 +417,11 @@ function handle_packet(flag, body) {
             alert("Can't use chance card " + chance_cards[selected_chance_card_id].title);
         } else if (body == 1) {
             alert("Selected chance " + chance_cards[selected_chance_card_id].title);
-            $("#player-selected-chance").text("Selected chance: " + chance_cards[selected_chance_card_id].title);
+
+            $("#player-selected-move-and-chance").append(
+                `<li><span>` +
+                `<img src="/static/chance/${chance_cards[selected_chance_card_id].title}.jpg" height="150" width="110" />` +
+                `</span></li>`);
 
             // remove chance
             for (idx = 0; idx < player_chance_cards.length; idx++) {
@@ -418,14 +437,20 @@ function handle_packet(flag, body) {
         break;
     case FLAG_REVEAL_MOVE:
         if (body != null) {
-            $("#opponent-selected-move").text("Opponent selected move: " + move_to_string(body));
-        }
+            $("#opponent-selected-move-and-chance").append(
+                `<li><span>` +
+                `<img src="/static/move/${move_to_string(body)}.jpg" height="150" width="110" />` +
+                `</span></li>`);
+            }
         break;
     case FLAG_REVEAL_CHANCE:
         if (body == null) {
-            $("#opponent-selected-chance").text("Opponent didn't use any chance card.");
+            // $("#opponent-selected-chance").text("Opponent didn't use any chance card.");
         } else {
-            $("#opponent-selected-chance").text("Opponent selected chance: " + chance_cards[body].title);
+            $("#opponent-selected-move-and-chance").append(
+                `<li><span>` +
+                `<img src="/static/chance/${chance_cards[body].title}.jpg" height="150" width="110" />` +
+                `</span></li>`);
         }
         break;
     case FLAG_SPOTLIGHT:

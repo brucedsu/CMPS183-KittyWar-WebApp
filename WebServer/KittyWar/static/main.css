@@ -100,6 +100,7 @@ header {
   padding: 0 4px;
   float: left;
 }
+
 .submit {
   width: 34px;
   height: 25px;
@@ -164,6 +165,7 @@ h1 {
   margin: 0 auto 30px;
   border-radius: 100%
 }
+
 /*page:contact*/
 .contact-info {
   list-style: none;
@@ -199,7 +201,7 @@ footer {
   text-align: center;
   clear: both;
   padding-top: 50px;
-  color:  #fff;
+  color: rgb(153, 50, 204);
 }
 
 .social-icon {
@@ -395,8 +397,10 @@ nav {
 }
 
 .view {
-  border-style: solid;
-  border-width: 2px;
+  border: 4px solid rgb(244, 67, 54);
+  border-radius: 10px;
+  background: url(background/green.jpg) repeat center;
+  color: lightgrey;
 }
 
 .clearfix:before,
@@ -419,6 +423,91 @@ nav {
 
 #main {
   width: 90%;
+  min-height: 750px;
   margin: auto;
+}
+
+#find-match-view {
+  text-align: center;
+}
+
+#find-match-status {
+  font-family: 'Changa One', sans-serif;
+  font-size: 32px;
+  margin-bottom: 30%;
+}
+
+#find-match-view button {
+  margin: 10px;
+}
+
+#select-cat-status {
+  font-family: 'Changa One', sans-serif;
+  font-size: 32px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.select-cat-cat-view {
+  display: inline-block;
+  margin: 10px;
+}
+
+#select-cat-view {
+  text-align: center;
+  font-family: 'Lato', sans-serif;
+}
+
+#select-cat-view button {
+  margin-bottom: 10px;
+}
+
+#opponent-view {
+  text-align: center;
+  padding: 0px 0px 0px 0px;
+  font-family: 'Lato', sans-serif;
+}
+
+#opponent-view-title {
+  font-family: 'Changa One', sans-serif;
+  font-size: 32px;
+}
+
+#opponent-view img {
+  margin-right: 10px;
+}
+
+#player-view {
+  text-align: center;
+  padding: 20px 0px 0px 10px;
+  font-family: 'Lato', sans-serif;
+}
+
+#player-view li {
+  list-style: none;
+  display: inline-block;
+}
+
+#player-view button {
+  margin-bottom: 10px;
+}
+
+#player-view img {
+  margin-right: 10px;
+}
+
+.button {
+  font-family: 'Lato', sans-serif;
+}
+
+#arena-view {
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+}
+
+#arena-view li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 10px;
 }
 

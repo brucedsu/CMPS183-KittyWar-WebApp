@@ -9,6 +9,7 @@
     <title>KittyWar</title>
 
     <link href='http://fonts.googleapis.com/css?family=Changa+One|Open+Sans:400italic,700italic,400,700,800' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel = "stylesheet" type = "text/css" href = "{% static 'main.css' %}" />
     <link rel = "stylesheet" type = "text/css" href = "{% static 'normalize.css' %}" />
     <link rel = "stylesheet" type = "text/css" href = "{% static 'responsive.css' %}" />
@@ -91,30 +92,36 @@
         <div id="select-cat-view" class="view">
             <p id="select-cat-status">Select a cat!</p>
 
+            <div>
             {% for cat in user_cats %}
-                <div onclick="select_cat({{cat.cat_id}})">
+                <div onclick="select_cat({{cat.cat_id}})" class="select-cat-cat-view">
                     <img src="{% static "" %}cat/{{cat.title}}.jpg" height="250" width="200"/>
                     <p>{{cat.title}}</p>
                     <p>Initial HP: {{cat.health}}</p>
                 </div>
             {% endfor %}
+            </div>
 
             <button class="button" id="select-cat-confirm-button">Confirm</button>
         </div>
 
         <div id="opponent-view" class="view">
+            <p id="opponent-view-title">Opponent Cat</p>
             <span><img id="opponent-view-cat-image" src="{% static "cat/funcbg.jpg" %}" alt="" height="160" width="120"></span>  <!-- opponent cat image -->
             <span><img id="opponent-view-cat-ability"src="{% static "cat/funcbg.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
             <p id="opponent-view-cat-name">Opponent Cat Name</p>  <!-- opponent cat name -->
             <p id="opponent-view-cat-health">Opponent Cat Health</p>  <!-- opponent cat health -->
         </div>
 
-        <div id="arena-view">
-            <p id="opponent-selected-move">Opponent selected move:</p>
-            <p id="opponent-selected-chance">Opponent selected chance:</p>
+        <div id="arena-view" class="">
+            <p>Opponent selected move and chance:</p>
+            <ul id="opponent-selected-move-and-chance">
+            </ul>
             <p id="player-used-ability">Player used ability:</p>
-            <p id="player-selected-move">Player selected move:</p>
-            <p id="player-selected-chance">Player selected chance:</p>
+            <img id="player-used-ability-image" src="{% static "cat/funcbg.jpg" %}" alt="" height="160" width="120"/>
+            <p>Player selected move and chance:</p>
+            <ul id="player-selected-move-and-chance">
+            </ul>
             <p id="game-phase">Before Game</p>
         </div>
 
@@ -134,8 +141,8 @@
             </ul>
 
             <ul id="player-view-chance-card-list">
-                <li><span onclick="select_chance_card(0)"><img src="{% static "chance/Can_t_Guard 509.jpg" %}" alt="" height="150" width="110"></span></li>
-                <li><span onclick="select_chance_card(1)"><img src="{% static "chance/Double_Purring509.jpg" %}" alt="" height="150" width="110"></span></li>
+                <li><span onclick="select_chance_card(0)"><img src="{% static "cat/funcbg.jpg" %}" alt="" height="150" width="110"></span></li>
+                <li><span onclick="select_chance_card(1)"><img src="{% static "cat/funcbg.jpg" %}" alt="" height="150" width="110"></span></li>
             </ul>
 
             <button onclick="ready()" class="button" id="player-view-ready-button">Ready</button>
