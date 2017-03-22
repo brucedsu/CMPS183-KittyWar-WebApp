@@ -1,8 +1,10 @@
 var player_cat          = null;
+var player_cat_health   = 10;
 var player_abilities    = [];
-var player_chance_cards = [];
+var player_chance_cards = [];  // array of ids
 
 var opponent_cat = null;
+var opponent_cat_health = 10;
 
 // Global Web Socket
 var socket = null;
@@ -90,16 +92,18 @@ function phase_to_string(phase) {
 var current_phase = PHASE_BEFORE_GAME;
 
 function start_next_phase() {
-    // loosing condition
-    if (player_cat.health == 0 || opponent_cat.health == 20) {
-        alert("You lost! Good game, well played!");
-        return;
-    }
+    if (player_cat != null && opponent_cat != null) {
+        // loosing condition
+        if (player_cat_health == 0 || opponent_cat_health == 20) {
+            alert("You lost! Good game, well played!");
+            return;
+        }
 
-    // winning condition
-    if (player_cat.health == 20 || opponent_cat.health == 0) {
-        alert("You won! You are awesome!");
-        return;
+        // winning condition
+        if (player_cat_health == 20 || opponent_cat_health == 0) {
+            alert("You won! You are awesome!");
+            return;
+        }
     }
 
     if (current_phase == PHASE_POSTLUDE) {
@@ -109,6 +113,8 @@ function start_next_phase() {
     } else {
         current_phase = current_phase + 1;
     }
+
+    $("#game-phase").text(phase_to_string(current_phase));
 
     alert(phase_to_string(current_phase) + " started!");
 }
@@ -180,13 +186,21 @@ function confirm_selected_cat() {
 }
 
 function update_player_chance_card_list() {
-    var idx = 0;
-    for (chance_card in player_chance_cards) {
-        $('player-view-chance-card-list').append(
-            `<li><span onclick="select_chance_card(${idx})">` +
-            `<img src="chance/${chance_card.title}.jpg" height="150" width="150" />` +
+    // remove all chance cards first
+    $("#player-view-chance-card-list").empty();
+
+    var idx;
+    var chance_card_id;
+
+    for (idx = 0; idx < player_chance_cards.length; idx++) {
+        chance_card_id = player_chance_cards[idx];
+
+        if (chance_card_id == -1) continue;
+
+        $("#player-view-chance-card-list").append(
+            `<li><span onclick="use_chance_card(${chance_card_id})">` +
+            `<img src="/static/chance/${chance_cards[chance_card_id].title}.jpg" height="150" width="110" />` +
             `</span></li>`);
-        idx = idx + 1;
     }
 }
 
@@ -217,6 +231,8 @@ function move_to_string(move_id) {
         return "Purr";
     case MOVE_GUARD:
         return "Guard";
+    case MOVE_SCRATCH:
+        return "Scratch";
     case MOVE_SKIP:
         return "Skip";
     default:
@@ -224,12 +240,12 @@ function move_to_string(move_id) {
     }
 }
 
-var selected_chance_id = -1;
+var selected_chance_card_id = -1;
 
-function select_chance_card(player_chance_card_index) {
-    selected_chance_id = player_chance_cards[player_chance_card_index].id;
+function use_chance_card(chance_card_id) {
+    selected_chance_card_id = chance_card_id;
 
-    send_packet(FLAG_SELECT_CHANCE, token, selected_chance_id);
+    send_packet(FLAG_SELECT_CHANCE, token, selected_chance_card_id);
 }
 
 function handle_packet(flag, body) {
@@ -279,23 +295,23 @@ function handle_packet(flag, body) {
     case FLAG_SELECT_CAT:
         if (body == 1) {  // success
             player_cat = available_cats[selected_cat_id];
+            player_cat_health = player_cat.health;
             player_abilities.push(available_abilities[player_cat.ability_id]);
 
+            $("#player-view-cat-name").text(player_cat.title);
+            $("#player-view-cat-health").text("Health: " + player_cat_health);
+
             $("#player-view-cat-image").attr({
-                src: "cat/" + player_cat.title + ".jpg",
+                src: "/static/cat/" + player_cat.title + ".jpg",
                 title: player_cat.title,
                 alt: player_cat.title + " Image"
             });
 
             $("#player-view-cat-ability").attr({
-                src: "ability/" + available_abilities[player_cat.ability_id].title + ".jpg",
+                src: "/static/ability/" + available_abilities[player_cat.ability_id].title + ".jpg",
                 title: available_abilities[player_cat.ability_id].title,
                 alt: available_abilities[player_cat.ability_id].title + " Image"
             });
-
-            $("#player-view-cat-name").text(player_cat.title);
-
-            $("#player-view-cat-health").text(player_cat.health);
 
             // send ready packet
             send_packet(FLAG_READY, token, null);
@@ -305,41 +321,40 @@ function handle_packet(flag, body) {
         break;
     case FLAG_OPPONENT_SELECTED_CAT:
         if (body >= 0) {
-            var opponent_cat_id = body;
-            opponent_cat = available_cats[opponent_cat_id];
+            opponent_cat = available_cats[body];
+            opponent_cat_health = opponent_cat.health;
+
+            $("#opponent-view-cat-name").text(opponent_cat.title);
+            $("#opponent-view-cat-health").text("Health: " + opponent_cat_health);
 
             $("#opponent-view-cat-image").attr({
-                src: "cat/" + opponent_cat.title + ".jpg",
+                src: "/static/cat/" + opponent_cat.title + ".jpg",
                 title: opponent_cat.title,
                 alt: opponent_cat.title + " Image"
             });
 
             $("#opponent-view-cat-ability").attr({
-                src: "ability/" + available_abilities[opponent_cat.ability_id].title + ".jpg",
+                src: "/static/ability/" + available_abilities[opponent_cat.ability_id].title + ".jpg",
                 title: available_abilities[opponent_cat.ability_id].title,
                 alt: available_abilities[opponent_cat.ability_id].title + " Image"
             });
-
-            $("#opponent-view-cat-namge").text(opponent_cat.title);
-
-            $("#oppoent-view-cat-health").text(opponent_cat.health);
         }
         break;
     case FLAG_USE_ABILITY:
         if (body == 0) {
             Alert("Ability is on cool down!");
         } else if (body == 1) {
-            $('player-used-ability').text(
+            $("#player-used-ability").text(
                 "Player used ability: " + available_abilities[used_ability_id].title);
         }
         break;
     case FLAG_GAIN_HP:
-        player_cat.health = body;
-        $("#player-view-cat-health").text(player_cat.health);
+        player_cat_health = body;
+        $("#player-view-cat-health").text("Health: " + player_cat_health);
         break;
     case FLAG_OPPONENT_GAIN_HP:
-        opponent_cat.health = body;
-        $("#oppoent-view-cat-health").text(opponent_cat.health);
+        opponent_cat_health = body;
+        $("#opponent-view-cat-health").text("Health: " + opponent_cat_health);
         break;
     case FLAG_DAMAGE_MODIFIED:
         break;
@@ -351,20 +366,23 @@ function handle_packet(flag, body) {
         break;
     case FLAG_GAIN_ABILITY:
         if (body >= 0) {
-            var random_abilit_id = body
-            player_abilities.push(available_abilities[random_abilit_id]);
+            var random_ability = available_abilities[body];
+            player_abilities.push(random_ability);
+
+            $("#player-view-cat-random-ability").attr({
+                src: "/static/ability/" + random_ability.title + ".jpg",
+                title: random_ability.title,
+                alt: random_ability.title + " Image"
+            });
         }
         break;
     case FLAG_GAIN_CHANCES:
         if (body.length >= 0) {
             player_chance_cards = [];
 
-            for (chance_id in body) {
-                player_chance_cards.push(chance_cards[chance_id]);
+            for (idx = 0; idx < body.length; idx++) {
+                player_chance_cards.push(body[idx]);
             }
-
-            // remove all cards first
-            $('player-view-chance-card-list').empty();
 
             // update chance card list
             update_player_chance_card_list();
@@ -372,21 +390,24 @@ function handle_packet(flag, body) {
         break;
     case FLAG_SELECT_MOVE:
         if (body == 0) {
-            // failed to select move
+            alert("Can't select move during " + phase_to_string(current_phase));
         } else if (body == 1) {
-            $('player-selected-move').text("Selected move: " + move_to_string(selected_move_id));
+            alert("Selected move " + move_to_string(selected_move_id));
+            $("#player-selected-move").text("Selected move: " + move_to_string(selected_move_id));
         }
         break;
     case FLAG_SELECT_CHANCE:
         if (body == 0) {
             // failed to select chance
+            alert("Can't use chance card " + chance_cards[selected_chance_card_id].title);
         } else if (body == 1) {
-            $('player-selected-chance').text("Selected chance: " + chance_cards[selected_chance_id].title);
+            alert("Selected chance " + chance_cards[selected_chance_card_id].title);
+            $("#player-selected-chance").text("Selected chance: " + chance_cards[selected_chance_card_id].title);
 
             // remove chance
-            for (chance_card in player_chance_cards) {
-                if (chance_card.id == selected_chance_id) {
-                    player_chance_cards.splice(idx, 1);
+            for (idx = 0; idx < player_chance_cards.length; idx++) {
+                if (player_chance_cards[idx] == selected_chance_card_id) {
+                    player_chance_cards[idx] = -1;
                     break;
                 }
             }
@@ -396,10 +417,16 @@ function handle_packet(flag, body) {
         }
         break;
     case FLAG_REVEAL_MOVE:
-        $('opponent-selected-move').text("Opponent selected move: " + move_to_string(body));
+        if (body != null) {
+            $("#opponent-selected-move").text("Opponent selected move: " + move_to_string(body));
+        }
         break;
     case FLAG_REVEAL_CHANCE:
-        $('opponent-selected-chance').text("Opponent selected chance: " + chance_cards[body].title);
+        if (body == null) {
+            $("#opponent-selected-chance").text("Opponent didn't use any chance card.");
+        } else {
+            $("#opponent-selected-chance").text("Opponent selected chance: " + chance_cards[body].title);
+        }
         break;
     case FLAG_SPOTLIGHT:
         break;

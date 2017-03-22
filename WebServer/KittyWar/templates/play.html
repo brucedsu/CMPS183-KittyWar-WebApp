@@ -101,15 +101,15 @@
     </div>
 
     <div id="opponent-view" class="view">
-        <span><img id="opponent-view-cat-image" src="{% static "cat/Abyssinian Cat.jpg" %}" alt="" height="160" width="120"></span>  <!-- opponent cat image -->
-        <span><img id="opponent-view-cat-ability"src="{% static "ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
-        <p id="opponent-view-cat-name">Abyssinian Cat</p>  <!-- opponent cat name -->
-        <p id="opponent-view-cat-health">Health: 10</p>  <!-- opponent cat health -->
+        <span><img id="opponent-view-cat-image" src="{% static "cat/funcbg.jpg" %}" alt="" height="160" width="120"></span>  <!-- opponent cat image -->
+        <span><img id="opponent-view-cat-ability"src="{% static "cat/funcbg.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
+        <p id="opponent-view-cat-name">Opponent Cat Name</p>  <!-- opponent cat name -->
+        <p id="opponent-view-cat-health">Opponent Cat Health</p>  <!-- opponent cat health -->
     </div>
 
     <div id="arena-view">
         <p id="opponent-selected-move">Opponent selected move:</p>
-        <p id="oppoent-selected-chance">Opponent selected chance:</p>
+        <p id="opponent-selected-chance">Opponent selected chance:</p>
         <p id="player-used-ability">Player used ability:</p>
         <p id="player-selected-move">Player selected move:</p>
         <p id="player-selected-chance">Player selected chance:</p>
@@ -117,13 +117,13 @@
     </div>
 
     <div id="player-view" class="view">
-        <span><img id="player-view-cat-image" src="{% static "cat/Abyssinian Cat.jpg" %}" alt="" height="160" width="120"></span>  <!-- opponent cat image -->
+        <span><img id="player-view-cat-image" src="{% static "cat/funcbg.jpg" %}" alt="" height="160" width="120"></span>  <!-- opponent cat image -->
 
-        <span onlick="use_ability(0)"><img id="player-view-cat-ability"src="{% static "ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
-        <span onclick="use_ability(1)"><img id="player-view-cat-random-ability"src="{% static "ability/Attacker 509.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
+        <span onlick="use_ability(0)"><img id="player-view-cat-ability"src="{% static "cat/funcbg.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
+        <span onclick="use_ability(1)"><img id="player-view-cat-random-ability"src="{% static "cat/funcbg.jpg" %}" alt="" height="150" width="110"></span>  <!-- opponent cat ability image -->
 
-        <p id="player-view-cat-name">Abyssinian Cat</p>  <!-- opponent cat name -->
-        <p id="player-view-cat-health">Health: 10</p>  <!-- opponent cat health -->
+        <p id="player-view-cat-name">Player Cat Name</p>  <!-- opponent cat name -->
+        <p id="player-view-cat-health">Player Cat Health</p>  <!-- opponent cat health -->
 
         <ul id="player-view-basic-moves">
             <li><span onclick="select_move(0)"><img src="{% static "move/Purr.jpg" %}" alt="" height="150" width="110" /></span></li>
