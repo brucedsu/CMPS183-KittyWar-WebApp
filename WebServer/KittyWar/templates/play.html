@@ -125,16 +125,16 @@
         <p id="player-view-cat-name">Player Cat Name</p>  <!-- opponent cat name -->
         <p id="player-view-cat-health">Player Cat Health</p>  <!-- opponent cat health -->
 
-        <ul id="player-view-basic-moves">
-            <li><span onclick="select_move(0)"><img src="{% static "move/Purr.jpg" %}" alt="" height="150" width="110" /></span></li>
-            <li><span onclick="select_move(1)"><img src="{% static "move/Guard.jpg" %}" alt="" height="150" width="110" /></span></li>
-            <li><span onclick="select_move(2)"><img src="{% static "move/Scratch.jpg" %}" alt="" height="150" width="110" /></span></li>
-        </ul>
+        <div id="player-view-basic-moves">
+            <span onclick="select_move(0)"><img src="{% static "move/Purr.jpg" %}" alt="" height="150" width="110" /></span>
+            <span onclick="select_move(1)"><img src="{% static "move/Guard.jpg" %}" alt="" height="150" width="110" /></span>
+            <span onclick="select_move(2)"><img src="{% static "move/Scratch.jpg" %}" alt="" height="150" width="110" /></span>
+        </div>
 
-        <ul id="player-view-chance-card-list">
-            <li><span onclick="select_chance_card(0)"><img src="{% static "chance/Can_t_Guard 509.jpg" %}" alt="" height="150" width="110"></span></li>
-            <li><span onclick="select_chance_card(1)"><img src="{% static "chance/Double_Purring509.jpg" %}" alt="" height="150" width="110"></span></li>
-        </ul>
+        <div id="player-view-chance-card-list">
+            <span onclick="select_chance_card(0)"><img src="{% static "chance/Can_t_Guard 509.jpg" %}" alt="" height="150" width="110"></span>
+            <span onclick="select_chance_card(1)"><img src="{% static "chance/Double_Purring509.jpg" %}" alt="" height="150" width="110"></span>
+        </div>
 
         <button onclick="ready()" class="button" id="player-view-ready-button">Ready</button>
     </div>
